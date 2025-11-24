@@ -5,7 +5,7 @@
 # Sistema de Cámara USB para Raspberry Pi Zero 2W
 #═══════════════════════════════════════════════════════════
 
-set -e
+# No usar set -e estricto para permitir errores en paquetes opcionales
 
 # Colores para output
 RED='\033[0;31m'
