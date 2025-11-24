@@ -49,7 +49,20 @@ done
 echo "   ✓ Dependencias principales instaladas"
 
 echo "[3/7] Instalando dependencias Python..."
-pip3 install -r requirements.txt
+
+# En Debian/Raspbian moderno (Bookworm+) se requiere --break-system-packages
+# o usar entornos virtuales. Para un sistema dedicado como este, es aceptable.
+
+echo "   Instalando pyserial..."
+pip3 install pyserial --break-system-packages || pip3 install pyserial
+
+echo "   Instalando numpy..."
+pip3 install numpy --break-system-packages || pip3 install numpy
+
+echo "   Instalando opencv-python..."
+pip3 install opencv-python-headless --break-system-packages || pip3 install opencv-python-headless
+
+echo "   ✓ Dependencias Python instaladas"
 
 echo "[4/7] Habilitando UART en Raspberry Pi..."
 

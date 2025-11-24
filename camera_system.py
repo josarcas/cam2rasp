@@ -48,6 +48,17 @@ class CameraController:
     def initialize_camera(self):
         """Inicializa la cámara USB"""
         try:
+            # Si usa hardware encoder, FFmpeg captura directamente desde /dev/videoX
+            # No necesitamos abrir la cámara con OpenCV
+            if self.use_hardware_encoder:
+                # Solo verificar que el dispositivo existe
+                device_path = f"/dev/video{self.config['camera']['device_id']}"
+                if not os.path.exists(device_path):
+                    raise Exception(f"Cámara USB no encontrada: {device_path}")
+                logger.info(f"Cámara USB detectada: {device_path} (hardware encoding)")
+                return True
+            
+            # Si usa software encoder, abrir con OpenCV
             self.camera = cv2.VideoCapture(self.config['camera']['device_id'])
             
             # Configurar resolución y FPS
@@ -61,7 +72,7 @@ class CameraController:
             if not self.camera.isOpened():
                 raise Exception("No se pudo abrir la cámara USB")
                 
-            logger.info("Cámara USB inicializada correctamente")
+            logger.info("Cámara USB inicializada correctamente (software encoding)")
             return True
             
         except Exception as e:
