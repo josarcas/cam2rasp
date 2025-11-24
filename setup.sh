@@ -5,7 +5,7 @@
 #═══════════════════════════════════════════════════════════
 
 # IMPORTANTE: Edita esta línea con la URL de tu repositorio
-REPO_URL="https://github.com/TU_USUARIO/TU_REPO.git"
+REPO_URL="https://github.com/josarcas/cam2rasp.git"
 
 echo "🚀 Instalando Sistema de Cámara USB..."
 echo ""

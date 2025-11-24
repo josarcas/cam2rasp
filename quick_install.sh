@@ -15,7 +15,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuración
-REPO_URL="https://github.com/TU_USUARIO/TU_REPO.git"  # CAMBIAR ESTO
+REPO_URL="https://github.com/josarcas/cam2rasp.git"  # CAMBIAR ESTO
 INSTALL_DIR="$HOME/camera_system"
 
 echo -e "${BLUE}"
