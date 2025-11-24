@@ -1,0 +1,24 @@
+[Unit]
+Description=Sistema de Captura de Video USB y Control UART
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/camera_system
+ExecStart=/usr/bin/python3 /opt/camera_system/camera_system.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Límites de recursos (usar todos los recursos disponibles)
+CPUQuota=100%
+MemoryMax=512M
+
+# Variables de entorno
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=multi-user.target

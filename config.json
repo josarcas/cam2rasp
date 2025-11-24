@@ -1,0 +1,22 @@
+{
+  "camera": {
+    "device_id": 0,
+    "width": 1920,
+    "height": 1080,
+    "fps": 30
+  },
+  "storage": {
+    "video_path": "/home/pi/videos"
+  },
+  "uart": {
+    "port": "/dev/serial0",
+    "baudrate": 115200,
+    "bytesize": 8,
+    "parity": "N",
+    "stopbits": 1,
+    "timeout": 1
+  },
+  "use_hardware_encoder": true,
+  "bitrate": "8M",
+  "auto_start_recording": false
+}

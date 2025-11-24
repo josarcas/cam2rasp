@@ -1,0 +1,170 @@
+═══════════════════════════════════════════════════════════════════════
+  IMPORTANTE: ANTES DE SUBIR A GITHUB
+═══════════════════════════════════════════════════════════════════════
+
+Para que tu repositorio se vea profesional en GitHub:
+
+1️⃣ RENOMBRAR EL README PRINCIPAL
+
+   En GitHub, el archivo README.md es el que se muestra en la página
+   principal del repositorio.
+
+   OPCIÓN A (Recomendado - README Visual):
+   ────────────────────────────────────────────────────
+   - Renombra: README_GITHUB.md → README.md
+   - Este tiene formato GitHub optimizado con tablas y badges
+   
+   OPCIÓN B (README Técnico Completo):
+   ────────────────────────────────────────────────────
+   - Deja el README.md actual como está
+   - Es más técnico y detallado
+
+═══════════════════════════════════════════════════════════════════════
+
+2️⃣ EDITAR LAS URLs EN ESTOS ARCHIVOS
+
+   Antes de subir, edita estos archivos y cambia:
+   
+   TU_USUARIO → tu nombre de usuario de GitHub
+   TU_REPO    → el nombre de tu repositorio
+
+   Archivos a editar:
+   ────────────────────────────────────────────────────
+   ✏️ quick_install.sh (línea 15)
+      REPO_URL="https://github.com/TU_USUARIO/TU_REPO.git"
+   
+   ✏️ setup.sh (línea 7)
+      REPO_URL="https://github.com/TU_USUARIO/TU_REPO.git"
+   
+   ✏️ README.md (varias líneas con ejemplos)
+   
+   ✏️ INSTALL_FROM_GITHUB.md (ejemplos de comandos)
+
+═══════════════════════════════════════════════════════════════════════
+
+3️⃣ ARCHIVOS QUE DEBES SUBIR A GITHUB
+
+   📁 ARCHIVOS ESENCIALES (obligatorios):
+   ────────────────────────────────────────────────────
+   ✅ camera_system.py          - Programa principal
+   ✅ config.json               - Configuración
+   ✅ install.sh                - Instalador
+   ✅ camera_system.service     - Servicio systemd
+   ✅ requirements.txt          - Dependencias Python
+   ✅ .gitignore               - Git ignore
+   
+   📖 DOCUMENTACIÓN (recomendado):
+   ────────────────────────────────────────────────────
+   ✅ README.md o README_GITHUB.md  - Página principal
+   ✅ QUICKSTART.md                 - Guía rápida
+   ✅ INSTALL_FROM_GITHUB.md        - Instalación GitHub
+   ✅ HARDWARE_ENCODING.md          - Detalles técnicos
+   ✅ EXAMPLES.md                   - Ejemplos
+   ✅ CHANGELOG.md                  - Historial
+   
+   🧪 SCRIPTS DE PRUEBA (opcional):
+   ────────────────────────────────────────────────────
+   ✅ test_hardware_encoder.sh
+   ✅ test_uart.py
+   ✅ quick_install.sh
+   ✅ setup.sh
+   
+   📝 AYUDAS EXTRAS (opcional, no necesario en GitHub):
+   ────────────────────────────────────────────────────
+   ⚪ COMO_USAR_DESDE_GITHUB.txt
+   ⚪ INSTRUCCIONES_RASPBERRY.txt
+   ⚪ PASOS_INSTALACION.md
+   ⚪ PROJECT_STRUCTURE.txt
+   ⚪ LEEME_GITHUB.txt (este archivo)
+
+═══════════════════════════════════════════════════════════════════════
+
+4️⃣ COMANDOS GIT PARA SUBIR TODO
+
+   Si no has inicializado el repositorio:
+   ────────────────────────────────────────────────────
+   cd /ruta/a/raspberry
+   git init
+   git add .
+   git commit -m "Initial commit - Sistema de cámara USB H.264"
+   git branch -M main
+   git remote add origin https://github.com/TU_USUARIO/TU_REPO.git
+   git push -u origin main
+
+   Si ya existe el repositorio:
+   ────────────────────────────────────────────────────
+   cd /ruta/a/raspberry
+   git add .
+   git commit -m "Update: Hardware H.264 encoding"
+   git push
+
+═══════════════════════════════════════════════════════════════════════
+
+5️⃣ HACER EL REPOSITORIO PÚBLICO
+
+   1. Ve a tu repositorio en GitHub
+   2. Click en "Settings" (Configuración)
+   3. Scroll hasta abajo
+   4. En "Danger Zone" → "Change repository visibility"
+   5. Selecciona "Public"
+
+═══════════════════════════════════════════════════════════════════════
+
+6️⃣ AGREGAR DESCRIPCIÓN Y TOPICS EN GITHUB
+
+   En la página principal de tu repo en GitHub:
+   
+   Descripción sugerida:
+   ────────────────────────────────────────────────────
+   "Sistema de captura de video USB para Raspberry Pi con hardware
+   H.264 encoding y control UART. Full HD @ 30fps con <15% CPU."
+   
+   Topics sugeridos:
+   ────────────────────────────────────────────────────
+   raspberry-pi, video-capture, h264, hardware-encoding,
+   uart, raspberry-pi-zero, camera, opencv, ffmpeg, v4l2
+
+═══════════════════════════════════════════════════════════════════════
+
+7️⃣ DESPUÉS DE SUBIR A GITHUB
+
+   Copia la URL de tu repositorio, ejemplo:
+   https://github.com/jcarlos/raspberry-camera-system
+
+   Y sigue las instrucciones en:
+   - COMO_USAR_DESDE_GITHUB.txt
+   - PASOS_INSTALACION.md
+
+═══════════════════════════════════════════════════════════════════════
+
+8️⃣ EJEMPLO COMPLETO DE USO
+
+   Una vez en GitHub, tus usuarios harán:
+   
+   ssh pi@<IP_RASPBERRY>
+   sudo apt-get update && sudo apt-get install -y git
+   git clone https://github.com/TU_USUARIO/TU_REPO.git camera_system
+   cd camera_system && sudo bash install.sh
+   sudo reboot
+
+═══════════════════════════════════════════════════════════════════════
+
+📝 CHECKLIST ANTES DE COMPARTIR
+
+   ☐ Editaste las URLs (TU_USUARIO/TU_REPO) en los scripts
+   ☐ Probaste la instalación desde GitHub en tu Raspberry Pi
+   ☐ Verificaste que el README se ve bien en GitHub
+   ☐ Agregaste descripción y topics al repositorio
+   ☐ El repositorio es público
+   ☐ Todos los archivos esenciales están subidos
+
+═══════════════════════════════════════════════════════════════════════
+
+✅ LISTO PARA USAR!
+
+Una vez que hagas esto, cualquier persona puede instalar tu sistema con:
+
+   git clone https://github.com/TU_USUARIO/TU_REPO.git camera_system
+   cd camera_system && sudo bash install.sh
+
+═══════════════════════════════════════════════════════════════════════

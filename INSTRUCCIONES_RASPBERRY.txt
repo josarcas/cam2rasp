@@ -1,0 +1,132 @@
+═══════════════════════════════════════════════════════════════
+  INSTRUCCIONES PARA INSTALAR EN TU RASPBERRY PI ZERO 2W
+═══════════════════════════════════════════════════════════════
+
+🔗 IMPORTANTE: Primero edita la URL de tu repositorio de GitHub
+
+   En los comandos de abajo, reemplaza:
+   - TU_USUARIO → con tu nombre de usuario de GitHub
+   - TU_REPO    → con el nombre de tu repositorio
+
+   Ejemplo:
+   https://github.com/jcarlos/raspberry-camera-system.git
+
+═══════════════════════════════════════════════════════════════
+
+📡 OPCIÓN 1: INSTALACIÓN COMPLETA (3 Comandos)
+═══════════════════════════════════════════════════════════════
+
+1️⃣ Conecta a tu Raspberry Pi por SSH:
+
+   ssh pi@<IP_DE_TU_RASPBERRY>
+   
+   (contraseña por defecto: raspberry)
+
+
+2️⃣ Copia y pega estos comandos:
+
+   sudo apt-get update && sudo apt-get install -y git
+   
+   git clone https://github.com/TU_USUARIO/TU_REPO.git camera_system
+   
+   cd camera_system && sudo bash install.sh
+
+
+3️⃣ Reinicia:
+
+   sudo reboot
+
+═══════════════════════════════════════════════════════════════
+
+📡 OPCIÓN 2: INSTALACIÓN ULTRA-RÁPIDA (1 Comando)
+═══════════════════════════════════════════════════════════════
+
+⚠️ Primero edita el archivo quick_install.sh en GitHub:
+   
+   Cambia la línea:
+   REPO_URL="https://github.com/TU_USUARIO/TU_REPO.git"
+   
+   Por tu URL real, ejemplo:
+   REPO_URL="https://github.com/jcarlos/raspberry-camera-system.git"
+
+
+Luego, conecta por SSH y ejecuta:
+
+   curl -sSL https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/quick_install.sh | sudo bash
+
+═══════════════════════════════════════════════════════════════
+
+✅ VERIFICAR QUE FUNCIONA
+═══════════════════════════════════════════════════════════════
+
+Después del reinicio, ejecuta:
+
+   sudo systemctl status camera_system
+   
+Si ves "active (running)" en verde, ¡está funcionando! ✓
+
+Para ver los logs en tiempo real:
+
+   sudo journalctl -u camera_system -f
+
+═══════════════════════════════════════════════════════════════
+
+🎮 USAR EL SISTEMA
+═══════════════════════════════════════════════════════════════
+
+Envía comandos por UART (115200 baud):
+
+   {"type":"start"}      → Iniciar grabación
+   {"type":"stop"}       → Detener grabación
+   {"type":"status"}     → Ver estado
+   {"type":"zoom","value":2.0}  → Zoom
+
+Los videos se guardan en: /home/pi/videos/
+
+═══════════════════════════════════════════════════════════════
+
+🔧 COMANDOS ÚTILES
+═══════════════════════════════════════════════════════════════
+
+Ver estado:
+   sudo systemctl status camera_system
+
+Reiniciar servicio:
+   sudo systemctl restart camera_system
+
+Detener servicio:
+   sudo systemctl stop camera_system
+
+Ver logs:
+   sudo journalctl -u camera_system -f
+
+Ver videos grabados:
+   ls -lh /home/pi/videos/
+
+Editar configuración:
+   sudo nano /etc/camera_system/config.json
+   sudo systemctl restart camera_system
+
+═══════════════════════════════════════════════════════════════
+
+🧪 PROBAR HARDWARE ENCODER
+═══════════════════════════════════════════════════════════════
+
+   cd ~/camera_system
+   bash test_hardware_encoder.sh
+
+═══════════════════════════════════════════════════════════════
+
+📖 MÁS INFORMACIÓN
+═══════════════════════════════════════════════════════════════
+
+README.md                 → Documentación completa
+INSTALL_FROM_GITHUB.md    → Instalación detallada desde GitHub
+QUICKSTART.md             → Guía rápida
+HARDWARE_ENCODING.md      → Detalles técnicos H.264
+EXAMPLES.md               → Ejemplos de código
+
+═══════════════════════════════════════════════════════════════
+
+✨ ¡Sistema listo para grabar Full HD @ 30fps con <15% CPU!
+═══════════════════════════════════════════════════════════════

@@ -1,0 +1,209 @@
+═══════════════════════════════════════════════════════════════════════
+  CÓMO INSTALAR EN TU RASPBERRY PI DESDE GITHUB - SUPER FÁCIL
+═══════════════════════════════════════════════════════════════════════
+
+Ya subiste los archivos a GitHub. Ahora sigue estos pasos:
+
+═══════════════════════════════════════════════════════════════════════
+PASO 1: CONSIGUE LA URL DE TU REPOSITORIO
+═══════════════════════════════════════════════════════════════════════
+
+Ve a tu repositorio en GitHub y copia la URL. Ejemplo:
+   https://github.com/tu_usuario/raspberry-camera-system
+
+═══════════════════════════════════════════════════════════════════════
+PASO 2: CONECTA A TU RASPBERRY PI
+═══════════════════════════════════════════════════════════════════════
+
+Desde tu PC, abre terminal/CMD y ejecuta:
+
+   ssh pi@<IP_DE_TU_RASPBERRY>
+
+Ejemplo:
+   ssh pi@192.168.1.100
+
+Contraseña por defecto: raspberry
+
+═══════════════════════════════════════════════════════════════════════
+PASO 3: EJECUTA ESTOS 3 COMANDOS EN LA RASPBERRY PI
+═══════════════════════════════════════════════════════════════════════
+
+Copia y pega cada uno (presiona ENTER después de cada línea):
+
+▶ Comando 1: Instalar Git
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+sudo apt-get update && sudo apt-get install -y git
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+▶ Comando 2: Descargar tu proyecto (CAMBIA LA URL POR LA TUYA)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+git clone https://github.com/TU_USUARIO/TU_REPO.git camera_system
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Por ejemplo, si tu repo es: https://github.com/jcarlos/raspi-cam
+Entonces ejecutas: git clone https://github.com/jcarlos/raspi-cam.git camera_system
+
+▶ Comando 3: Instalar todo
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+cd camera_system && sudo bash install.sh
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Esto tarda varios minutos. Espera que termine.
+
+═══════════════════════════════════════════════════════════════════════
+PASO 4: REINICIAR
+═══════════════════════════════════════════════════════════════════════
+
+Ejecuta:
+   sudo reboot
+
+La Raspberry Pi se reiniciará.
+
+═══════════════════════════════════════════════════════════════════════
+PASO 5: VERIFICAR QUE FUNCIONA
+═══════════════════════════════════════════════════════════════════════
+
+Después de 1-2 minutos, vuelve a conectar por SSH:
+
+   ssh pi@<IP_DE_TU_RASPBERRY>
+
+Y ejecuta:
+
+   sudo systemctl status camera_system
+
+Si ves "active (running)" con un punto verde ● → ¡FUNCIONA! ✓
+
+═══════════════════════════════════════════════════════════════════════
+EJEMPLO COMPLETO
+═══════════════════════════════════════════════════════════════════════
+
+Supongamos:
+- Tu repo: https://github.com/jcarlos/camera-system
+- IP de tu Raspberry: 192.168.1.100
+
+Entonces ejecutas:
+
+# En tu PC:
+ssh pi@192.168.1.100
+
+# Dentro de la Raspberry Pi (copia línea por línea):
+sudo apt-get update && sudo apt-get install -y git
+git clone https://github.com/jcarlos/camera-system.git camera_system
+cd camera_system && sudo bash install.sh
+sudo reboot
+
+# Después del reinicio, verificar:
+ssh pi@192.168.1.100
+sudo systemctl status camera_system
+
+═══════════════════════════════════════════════════════════════════════
+¿QUÉ HACE CADA COMANDO?
+═══════════════════════════════════════════════════════════════════════
+
+1. apt-get update        → Actualiza lista de paquetes
+2. apt-get install git   → Instala Git para descargar de GitHub
+3. git clone             → Descarga tu proyecto de GitHub
+4. cd camera_system      → Entra a la carpeta descargada
+5. bash install.sh       → Ejecuta el instalador
+6. reboot                → Reinicia la Raspberry Pi
+
+═══════════════════════════════════════════════════════════════════════
+DESPUÉS DE INSTALAR - COMANDOS ÚTILES
+═══════════════════════════════════════════════════════════════════════
+
+Ver estado del sistema:
+   sudo systemctl status camera_system
+
+Ver logs en tiempo real:
+   sudo journalctl -u camera_system -f
+
+Ver videos grabados:
+   ls -lh /home/pi/videos/
+
+Reiniciar el servicio:
+   sudo systemctl restart camera_system
+
+Ver temperatura:
+   vcgencmd measure_temp
+
+Ver espacio disponible:
+   df -h
+
+═══════════════════════════════════════════════════════════════════════
+ENVIAR COMANDOS POR UART
+═══════════════════════════════════════════════════════════════════════
+
+Desde Arduino u otro microcontrolador conectado al UART:
+
+   Serial.begin(115200);
+   Serial.println("{\"type\":\"start\"}");     // Iniciar grabación
+   Serial.println("{\"type\":\"stop\"}");      // Detener grabación
+   Serial.println("{\"type\":\"status\"}");    // Ver estado
+
+Comandos disponibles:
+   start      → Iniciar grabación
+   stop       → Detener grabación
+   zoom 2.0   → Hacer zoom
+   status     → Ver estado actual
+   ping       → Test de conexión
+
+═══════════════════════════════════════════════════════════════════════
+¿NO SABES LA IP DE TU RASPBERRY PI?
+═══════════════════════════════════════════════════════════════════════
+
+Opción 1: Usar hostname
+   ping raspberrypi.local
+   ssh pi@raspberrypi.local
+
+Opción 2: Ver en tu router
+   Busca en la página web de tu router los dispositivos conectados
+
+Opción 3: Conectar un monitor y teclado
+   Ejecuta: hostname -I
+
+═══════════════════════════════════════════════════════════════════════
+SOLUCIÓN DE PROBLEMAS
+═══════════════════════════════════════════════════════════════════════
+
+❌ "Permission denied" al hacer SSH
+   → La contraseña por defecto es: raspberry
+   → Verifica que SSH está habilitado
+
+❌ Error al clonar repositorio
+   → Verifica que la URL es correcta
+   → Verifica que el repositorio es público
+   → Prueba internet: ping google.com
+
+❌ Servicio no inicia
+   → Ver logs: sudo journalctl -u camera_system --no-pager
+   → Ejecutar manualmente: sudo python3 /opt/camera_system/camera_system.py
+
+❌ Cámara no detectada
+   → Verifica USB: lsusb
+   → Verifica video: ls /dev/video*
+
+═══════════════════════════════════════════════════════════════════════
+MÁS INFORMACIÓN
+═══════════════════════════════════════════════════════════════════════
+
+Lee estos archivos en tu repositorio:
+
+   README.md                  → Documentación completa
+   PASOS_INSTALACION.md       → Guía detallada paso a paso
+   QUICKSTART.md              → Inicio rápido
+   HARDWARE_ENCODING.md       → Detalles técnicos
+   EXAMPLES.md                → Ejemplos de código
+
+═══════════════════════════════════════════════════════════════════════
+
+✨ RESUMEN ULTRA CORTO:
+   1. ssh pi@<IP>
+   2. sudo apt-get update && sudo apt-get install -y git
+   3. git clone <TU_URL> camera_system
+   4. cd camera_system && sudo bash install.sh
+   5. sudo reboot
+   6. Listo!
+
+═══════════════════════════════════════════════════════════════════════
+🎥 Sistema listo para grabar Full HD @ 30fps usando solo 10-15% CPU!
+═══════════════════════════════════════════════════════════════════════
