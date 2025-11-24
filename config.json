@@ -1,9 +1,9 @@
 {
   "camera": {
     "device_id": 0,
-    "width": 1920,
-    "height": 1080,
-    "fps": 60
+    "width": 3840,
+    "height": 2160,
+    "fps": 30
   },
   "storage": {
     "video_path": "/home/pi/videos"
@@ -17,6 +17,8 @@
     "timeout": 1
   },
   "use_hardware_encoder": true,
-  "bitrate": "25M",
+  "use_camera_h264": false,
+  "use_mjpeg_raw": true,
+  "bitrate": "8M",
   "auto_start_recording": true
 }

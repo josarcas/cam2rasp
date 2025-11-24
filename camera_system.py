@@ -110,31 +110,65 @@ class CameraController:
             return False
     
     def _start_hardware_recording(self):
-        """Inicia grabación usando hardware encoder H.264"""
+        """Inicia grabación usando stream directo de la cámara o hardware encoder"""
         device_id = self.config['camera']['device_id']
         width = self.config['camera']['width']
         height = self.config['camera']['height']
         fps = self.config['camera']['fps']
-        bitrate = self.config.get('bitrate', '4M')
+        use_camera_h264 = self.config.get('use_camera_h264', False)
+        use_mjpeg_raw = self.config.get('use_mjpeg_raw', False)
         
-        # Usar ffmpeg con hardware acceleration V4L2
-        # El encoder h264_v4l2m2m usa el hardware encoder de la Raspberry Pi
-        ffmpeg_cmd = [
-            'ffmpeg',
-            '-f', 'v4l2',
-            '-input_format', 'mjpeg',  # o 'yuyv422' dependiendo de la cámara
-            '-video_size', f'{width}x{height}',
-            '-framerate', str(fps),
-            '-i', f'/dev/video{device_id}',
-            '-c:v', 'h264_v4l2m2m',  # Hardware encoder
-            '-b:v', bitrate,
-            '-pix_fmt', 'yuv420p',
-            '-preset', 'ultrafast',
-            '-tune', 'zerolatency',
-            '-g', str(fps * 2),  # GOP size
-            '-f', 'h264',
-            str(self.current_filename)
-        ]
+        if use_mjpeg_raw:
+            # Modo 1: MJPEG raw de la cámara (CPU ~2%, archivos grandes)
+            # Guarda MJPEG directamente sin re-encoding
+            ffmpeg_cmd = [
+                'ffmpeg',
+                '-f', 'v4l2',
+                '-input_format', 'mjpeg',
+                '-video_size', f'{width}x{height}',
+                '-framerate', str(fps),
+                '-i', f'/dev/video{device_id}',
+                '-c:v', 'copy',  # Copiar MJPEG sin recodificar
+                '-f', 'avi',  # AVI soporta MJPEG nativo
+                str(self.current_filename).replace('.h264', '.avi')
+            ]
+            logger.info("Usando MJPEG raw de la cámara (sin encoding, archivos grandes)")
+        elif use_camera_h264:
+            # Modo 2: Copiar stream H.264 directo de la cámara (CPU ~2%)
+            # La cámara hace el encoding, solo copiamos el stream
+            ffmpeg_cmd = [
+                'ffmpeg',
+                '-f', 'v4l2',
+                '-input_format', 'h264',  # H.264 nativo de la cámara
+                '-video_size', f'{width}x{height}',
+                '-framerate', str(fps),
+                '-i', f'/dev/video{device_id}',
+                '-c:v', 'copy',  # Copiar sin recodificar
+                '-f', 'mp4',
+                '-movflags', '+faststart',
+                str(self.current_filename).replace('.h264', '.mp4')
+            ]
+            logger.info("Usando H.264 nativo de la cámara (stream copy)")
+        else:
+            # Modo 3: Hardware encoder de la Pi (CPU ~10-15%)
+            bitrate = self.config.get('bitrate', '4M')
+            ffmpeg_cmd = [
+                'ffmpeg',
+                '-f', 'v4l2',
+                '-input_format', 'mjpeg',
+                '-video_size', f'{width}x{height}',
+                '-framerate', str(fps),
+                '-i', f'/dev/video{device_id}',
+                '-c:v', 'h264_v4l2m2m',  # Hardware encoder Pi
+                '-b:v', bitrate,
+                '-pix_fmt', 'yuv420p',
+                '-preset', 'ultrafast',
+                '-tune', 'zerolatency',
+                '-g', str(fps * 2),
+                '-f', 'h264',
+                str(self.current_filename)
+            ]
+            logger.info("Usando hardware encoder de la Raspberry Pi")
         
         logger.info(f"Comando FFmpeg: {' '.join(ffmpeg_cmd)}")
         
